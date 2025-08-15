@@ -37,7 +37,6 @@ const SafeCam = () => {
   const handleStartStreaming = async () => {
     try {
       setCameraError("");
-      console.log('카메라 스트림 요청 시작...');
       
       // 카메라 스트림 가져오기
       const mediaStream = await navigator.mediaDevices.getUserMedia({ 
@@ -49,20 +48,15 @@ const SafeCam = () => {
         audio: false 
       });
       
-      console.log('카메라 스트림 성공:', mediaStream);
-      console.log('비디오 트랙:', mediaStream.getVideoTracks());
       
       // 비디오 엘리먼트에 스트림 연결
       if (videoRef.current) {
-        console.log('비디오 엘리먼트에 스트림 연결 중...');
         videoRef.current.srcObject = mediaStream;
         
         // 명시적으로 재생 시작
         try {
           await videoRef.current.play();
-          console.log('비디오 재생 시작됨');
         } catch (playError) {
-          console.error('비디오 재생 오류:', playError);
           // 사용자 상호작용 후 재생 시도
           videoRef.current.muted = true;
           await videoRef.current.play();

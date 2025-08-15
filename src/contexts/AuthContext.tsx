@@ -21,30 +21,36 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-        
-        if (event === 'SIGNED_IN') {
-          toast.success('로그인되었습니다');
-        }
-        if (event === 'SIGNED_OUT') {
-          toast.success('로그아웃되었습니다');
-        }
+    // Clear any existing session first to prevent automatic login
+    const clearSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        await supabase.auth.signOut();
       }
-    );
+    };
+    
+    clearSession().then(() => {
+      // Set up auth state listener
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        (event, session) => {
+          setSession(session);
+          setUser(session?.user ?? null);
+          setLoading(false);
+          
+          // Only show toast for explicit login/logout actions
+          if (event === 'SIGNED_IN') {
+            toast.success('로그인되었습니다');
+          }
+          if (event === 'SIGNED_OUT') {
+            toast.success('로그아웃되었습니다');
+          }
+        }
+      );
 
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
       setLoading(false);
+      
+      return () => subscription.unsubscribe();
     });
-
-    return () => subscription.unsubscribe();
   }, []);
 
   const signUp = async (email: string, password: string, displayName?: string) => {
@@ -84,12 +90,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const signOut = async () => {
-    console.log('Signing out user...');
     const { error } = await supabase.auth.signOut();
     if (error) {
       toast.error(error.message);
-    } else {
-      console.log('User signed out successfully');
     }
   };
 

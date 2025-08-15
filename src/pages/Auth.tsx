@@ -57,7 +57,6 @@ const Auth = () => {
         
         // 로그인 성공 - 실제 DB에서 역할을 조회하도록 /home으로 이동
         // (Home 컴포넌트에서 userType에 따라 자동으로 리디렉션됨)
-        console.log('Login successful, selected role:', selectedRole, 'but will use DB role');
         navigate('/home');
         
         toast({

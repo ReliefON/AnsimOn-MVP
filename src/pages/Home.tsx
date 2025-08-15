@@ -45,7 +45,6 @@ const Home = () => {
   // Redirect technicians to their dashboard (safely in useEffect)
   useEffect(() => {
     if (!loading && userType === 'technician') {
-      console.log('Redirecting technician to dashboard, userType:', userType);
       navigate('/technician');
     }
   }, [userType, loading, navigate]);

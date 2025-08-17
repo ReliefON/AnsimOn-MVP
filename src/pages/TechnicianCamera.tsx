@@ -23,6 +23,7 @@ const TechnicianCamera = () => {
   const [duration, setDuration] = useState<string>('0:00');
   const [stream, setStream] = useState<MediaStream | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const hasInitialized = useRef(false);
 
   const currentRequest = serviceRequests.find(req => req.id === serviceId);
 
@@ -37,8 +38,11 @@ const TechnicianCamera = () => {
       startMonitoring();
     }
 
-    // Auto-start recording when component mounts
-    startRecording();
+    // Auto-start recording only on initial mount
+    if (!hasInitialized.current) {
+      startRecording();
+      hasInitialized.current = true;
+    }
     
     return () => {
       // Cleanup stream when component unmounts
@@ -46,7 +50,7 @@ const TechnicianCamera = () => {
         stream.getTracks().forEach(track => track.stop());
       }
     };
-  }, [currentRequest, navigate]);
+  }, [currentRequest, navigate, stream]);
 
   // Duration timer
   useEffect(() => {

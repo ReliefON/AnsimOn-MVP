@@ -178,7 +178,7 @@ const Technician = () => {
                   <User size={20} className="text-primary" />
                   <div>
                     <p className="font-medium text-foreground">고객 정보</p>
-                    <p className="text-sm text-muted-foreground">홍길동 고객님</p>
+                    <p className="text-sm text-muted-foreground">{currentRequest.customer_name}</p>
                   </div>
                 </div>
 

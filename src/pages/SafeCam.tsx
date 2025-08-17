@@ -7,6 +7,7 @@ import { useService } from "@/contexts/ServiceContext";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
+import { useSafetyPartners } from "@/hooks/useSupabaseData";
 
 const SafeCam = () => {
   const [isStreaming, setIsStreaming] = useState(false);
@@ -20,6 +21,22 @@ const SafeCam = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { status, serviceInfo, endMonitoring, resetService, triggerEmergency } = useService();
+  const { partners } = useSafetyPartners();
+
+  // 안심 파트너 표시 텍스트 생성
+  const getPartnerDisplayText = () => {
+    if (!partners || partners.length === 0) {
+      return "안심 파트너를 등록해주세요";
+    }
+    
+    const primaryPartner = partners.find(p => p.is_primary) || partners[0];
+    
+    if (partners.length === 1) {
+      return `${primaryPartner.name}님이 시청 중`;
+    }
+    
+    return `${primaryPartner.name}님 외 ${partners.length - 1}명이 시청 중`;
+  };
 
   // Check if technician is recording (monitoring status)
   useEffect(() => {
@@ -362,7 +379,7 @@ const SafeCam = () => {
                       <Users size={16} className="text-primary" />
                       <span className="text-sm font-medium">안심 파트너</span>
                     </div>
-                    <span className="text-sm text-muted-foreground">실시간 알림 대기 중</span>
+                    <span className="text-sm text-muted-foreground">{getPartnerDisplayText()}</span>
                   </div>
                 </div>
               )}

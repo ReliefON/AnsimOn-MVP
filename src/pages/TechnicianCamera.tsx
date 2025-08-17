@@ -270,20 +270,20 @@ const TechnicianCamera = () => {
                   onClick={startRecording}
                   variant="safe"
                   size="lg"
-                  className="flex-1"
+                  className="flex-1 min-w-0 flex items-center justify-center"
                 >
-                  <Video className="mr-2" size={20} />
-                  녹화 시작
+                  <Video className="mr-2 flex-shrink-0" size={20} />
+                  <span className="text-sm overflow-hidden text-ellipsis">녹화 시작</span>
                 </Button>
               ) : (
                 <Button 
                   onClick={stopRecording}
                   variant="outline"
                   size="lg"
-                  className="flex-1"
+                  className="flex-1 min-w-0 flex items-center justify-center"
                 >
-                  <VideoOff className="mr-2" size={20} />
-                  녹화 중지
+                  <VideoOff className="mr-2 flex-shrink-0" size={20} />
+                  <span className="text-sm overflow-hidden text-ellipsis">녹화 중지</span>
                 </Button>
               )}
               
@@ -291,10 +291,10 @@ const TechnicianCamera = () => {
                 onClick={handleCompleteService}
                 variant="safe"
                 size="lg"
-                className="flex-1"
+                className="flex-1 min-w-0 flex items-center justify-center"
               >
-                <StopCircle className="mr-2" size={20} />
-                모니터링 종료
+                <StopCircle className="mr-2 flex-shrink-0" size={20} />
+                <span className="text-sm overflow-hidden text-ellipsis">모니터링 종료</span>
               </Button>
             </div>
           </CardContent>

@@ -144,6 +144,26 @@ const Auth = () => {
                   <span>기술인</span>
                 </Button>
               </div>
+              
+              {/* 테스트 계정 정보 표시 */}
+              {selectedRole && (
+                <div className="text-center text-sm text-gray-600 mt-3">
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <p className="font-medium mb-1">테스트 계정</p>
+                    {selectedRole === 'customer' ? (
+                      <>
+                        <p>이메일: customer2@mytestapp.com</p>
+                        <p>비밀번호: customer2</p>
+                      </>
+                    ) : (
+                      <>
+                        <p>이메일: tech1@mytestapp.com</p>
+                        <p>비밀번호: tech1</p>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
